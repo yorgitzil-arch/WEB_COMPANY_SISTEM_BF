@@ -37,9 +37,8 @@
                     <li class="nav-header">MANAJEMEN</li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-users-cog"></i>
-                            <p>Kelola Akun</p>
+                        <a href="{{ route('manage-admin.index') }}" class="nav-link">
+                         <i class="fa fa-user-shield"></i> Kelola Akun
                         </a>
                     </li>
                     <li class="nav-item">
