@@ -18,6 +18,9 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
     Route::resource('manage-admin', \App\Http\Controllers\Admin\AdminCrudController::class)->names('manage-admin');
+    Route::resource('crud_anggota', \App\Http\Controllers\Admin\AnggotaController::class)->names('crud_anggota');
+    Route::resource('crud_departemen', \App\Http\Controllers\Admin\DepartemenController::class)->names('crud_departemen');
+
     // Tempat untuk menambahkan route admin di sini yaaaa!, Tambah sesuai kebutuhan fitur yang dikerjakan, jangan aneh-aneh biar mudah!
 });
 

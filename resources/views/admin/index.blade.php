@@ -1,3 +1,8 @@
+@extends('layouts.base_sistem')
+
+@section('title', 'Dashboard create')
+
+@section('content')
 <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
     <h2>Daftar Admin</h2>
     <a href="{{ route('manage-admin.create') }}" style="background: #3b82f6; color: #fff; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-weight: 600;">+ Tambah Admin</a>
@@ -43,3 +48,5 @@
 <div style="margin-top: 1rem;">
     {{ $admins->links() }}
 </div>
+
+@endsection

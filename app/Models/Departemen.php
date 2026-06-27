@@ -11,6 +11,7 @@ class Departemen extends Model
     protected $fillable = [
         'nama_departemen',
         'deskripsi',
+        'id_pengguna',
         'created_at',
         'updated_at',
     ];
