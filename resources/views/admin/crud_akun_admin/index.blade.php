@@ -1,3 +1,8 @@
+@extends('layouts.base_sistem')
+@section('title', 'Kelola Admin')
+@section('content')
+<div class="container-fluid p-4">
+<h1 class="mb-4" style="font-size: 1.5rem; font-weight: 600; color: #2d3748;">Dashboard Admin</h1>
 <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
     <h2>Daftar Admin</h2>
     <a href="{{ route('manage-admin.create') }}" style="background: #3b82f6; color: #fff; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none; font-weight: 600;">+ Tambah Admin</a>
@@ -43,3 +48,5 @@
 <div style="margin-top: 1rem;">
     {{ $admins->links() }}
 </div>
+</div>
+@endsection

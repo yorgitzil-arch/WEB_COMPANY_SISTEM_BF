@@ -4,6 +4,7 @@
 
 @section('content')
 <div class="container-fluid p-4">
+    <h1 class="mb-4" style="font-size: 1.5rem; font-weight: 600; color: #2d3748;">Dashboard Admin</h1>
     
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
         

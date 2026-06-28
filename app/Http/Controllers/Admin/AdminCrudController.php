@@ -14,13 +14,13 @@ class AdminCrudController extends Controller
     public function index()
     {
         $admins = Admin::orderBy('id_admin', 'desc')->paginate(10);
-        return view('admin.index', compact('admins'));
+        return view('admin/crud_akun_admin.index', compact('admins'));
     }
 
     // 2. CREATE: Tampilkan Form Tambah (Ini rute manage-admin.create yang error tadi)
     public function create()
     {
-        return view('admin.create');
+        return view('admin/crud_akun_admin.create');
     }
 
     // Proses Simpan Admin Baru (manage-admin.store)
@@ -47,7 +47,7 @@ class AdminCrudController extends Controller
     public function edit($id)
     {
         $adminData = Admin::findOrFail($id);
-        return view('admin.edit', compact('adminData'));
+        return view('admin/crud_akun_admin.edit', compact('adminData'));
     }
 
     // Proses Simpan Perubahan Edit (manage-admin.update)

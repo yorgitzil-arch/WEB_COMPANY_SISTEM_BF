@@ -38,7 +38,7 @@
 
                     <li class="nav-item">
                         <a href="{{ route('manage-admin.index') }}" class="nav-link">
-                         <i class="fa fa-user-shield"></i> Kelola Akun
+                         <i class="fa fa-user-shield"></i> Kelola Admin
                         </a>
                     </li>
                     <li class="nav-item">
