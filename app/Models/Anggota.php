@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -8,21 +7,35 @@ use Illuminate\Database\Eloquent\Model;
 class Anggota extends Model
 {
     protected $table = 'anggota';
-    
-    // 1. Ubah primary key ke id_pengguna sesuai struktur error database kamu
-    protected $primaryKey = 'id_pengguna'; 
-    
-    // Jika id_pengguna bukan auto-incrementing integer (misal kamu isi manual/string), matikan ini:
-    // public $incrementing = false; 
+
+    protected $primaryKey = 'id_anggota';
 
     protected $fillable = [
-        'id_pengguna', // Tambahkan ini agar bisa diisi saat Anggota::create
+        'id_pengguna',    
+        'gambar_profil',
         'nama_lengkap',
+        'nama_panggilan',
         'email',
-        'kata_sandi',
-        'id_sesi',
-        'terdaftar_pada',
-        'terakhir_login',
+        'nomor_wa',
+        'alamat',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'deskripsi_diri',
+        'bidang_keahlian_utama',
+        'url_youtube',
+        'url_facebook',
+        'url_instagram',
+        'url_tiktok',
+        'url_linktree',
+        'url_blogger',
+        'status_keaktifan',
+        'dibuat_pada',
+        'diperbarui_pada',
     ];
-    
+
+    // Relasi ke pengguna
+    public function pengguna()
+    {
+        return $this->belongsTo(Pengguna::class, 'id_pengguna');
+    }
 }

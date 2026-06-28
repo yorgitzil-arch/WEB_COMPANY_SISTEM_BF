@@ -20,24 +20,35 @@
                     <h2 class="text-lg font-bold text-gray-800">Ubah Data Departemen</h2>
                     <p class="text-xs text-gray-500 mt-1">Perbarui informasi departemen pilihan Anda.</p>
                 </div>
-                <form action="{{ route('crud_departemen.update', $departemen->id_departemen) }}" method="POST"
-                    class="p-6 space-y-5">
-                    @csrf @method('PUT')
+                <form action="{{ route('crud_departemen.update', $departemen->id_departemen) }}" method="POST" class="p-6 space-y-4">
+                    @csrf
+                    @method('PUT')
+
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Nama Departemen</label>
-                        <input type="text" name="nama_departemen" value="{{ $departemen->nama_departemen }}" required
-                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                        <label for="nama" class="block text-sm font-medium text-gray-700">Nama Departemen <span class="text-red-500">*</span></label>
+                        <input type="text" name="nama" id="nama" value="{{ old('nama', $departemen->nama_departemen) }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm">
                     </div>
+
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Deskripsi Departemen</label>
-                        <textarea name="deskripsi" rows="4" required
-                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">{{ $departemen->deskripsi }}</textarea>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email Login <span class="text-red-500">*</span></label>
+                        <input type="email" name="email" id="email" value="{{ old('email', $departemen->pengguna->email ?? '') }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm">
+                        <small class="text-gray-400 text-xs">Email ini digunakan untuk login ke sistem</small>
                     </div>
-                    <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
-                        <a href="{{ route('crud_departemen.index') }}"
-                            class="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition">Batal</a>
-                        <button type="submit"
-                            class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm transition">Perbarui</button>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password Baru</label>
+                        <input type="password" name="password" id="password" placeholder="Isi hanya jika ingin merubah password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm">
+                        <small class="text-gray-400 text-xs">Kosongkan jika tidak ingin mengganti password</small>
+                    </div>
+
+                    <div>
+                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Konfirmasi Password Baru</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Isi hanya jika ingin merubah password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm">
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">Perbarui Data</button>
+                        <a href="{{ route('crud_departemen.index') }}" class="text-gray-500 hover:text-gray-700 text-sm">Batal</a>
                     </div>
                 </form>
             </div>

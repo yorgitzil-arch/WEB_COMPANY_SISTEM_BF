@@ -5,6 +5,16 @@
 @section('content')
 <div style="background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
     <h3 style="margin-bottom: 1.5rem; font-weight: 600;">Form Tambah Admin</h3>
+
+    @if ($errors->any())
+    <div style="background: #fde2e2; color: #991b1b; padding: 1rem; border-radius: 6px; margin-bottom: 1rem;">
+        <ul style="list-style: none; margin: 0; padding: 0;">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     
     <form action="{{ route('manage-admin.store') }}" method="POST">
         @csrf
@@ -21,6 +31,11 @@
         <div style="margin-bottom: 1.5rem;">
             <label style="display: block; margin-bottom: 0.5rem; color: #4b5563;">Password</label>
             <input type="password" name="password" required style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px;">
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; color: #4b5563;">Konfirmasi Password</label>
+            <input type="password" name="password_confirmation" required style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px;">
         </div>
 
         <button type="submit" style="background: #3b82f6; color: #fff; padding: 0.5rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Simpan Admin</button>

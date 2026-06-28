@@ -22,4 +22,11 @@ class Admin extends Model
         'akses_validasi_komentar',
         'akses_validasi_konsultasi',
     ];
+    
+    public function pengguna()
+    {
+        return $this->belongsTo(Pengguna::class, 'id_pengguna');
+    }
 }
+
+

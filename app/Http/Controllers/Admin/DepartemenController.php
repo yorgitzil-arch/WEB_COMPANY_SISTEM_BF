@@ -4,77 +4,130 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Departemen;
+use App\Models\Pengguna;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class DepartemenController extends Controller
 {
-    // 1. READ: Tampilkan daftar Departemen
     public function index()
     {
-        $departemens = Departemen::orderBy('id_departemen', 'desc')->paginate(10);
-        return view('admin.crud_departemen.index', compact('departemens'));
+        $departemen = Departemen::with('pengguna')->orderBy('id_departemen', 'desc')->paginate(10);
+        return view('admin.crud_departemen.index', compact('departemen'));
     }
 
-    // 2. CREATE: Tampilkan Form Tambah Departemen
     public function create()
     {
         return view('admin.crud_departemen.create');
     }
 
-    // Proses Simpan Departemen Baru
     public function store(Request $request)
     {
         $request->validate([
-            'nama_departemen' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|unique:pengguna,email',
+            'password' => 'required|min:6|confirmed',
         ]);
 
-        // FIX: Menyertakan id_pengguna dari admin yang sedang login
-        Departemen::create([
-            'nama_departemen' => $request->nama_departemen,
-            'deskripsi'       => $request->deskripsi,
-            'id_pengguna'     => auth()->user()->id_pengguna, 
-        ]);
+        DB::beginTransaction();
 
-        return redirect()->route('crud_departemen.index')->with('success', 'Departemen baru berhasil ditambahkan!');
+        try {
+            // 1. Simpan ke pengguna
+            $pengguna = Pengguna::create([
+                'email' => $request->email,
+                'kata_sandi' => Hash::make($request->password),
+                'peran' => 'departemen',
+                'terdaftar_pada' => now(),
+            ]);
+
+            // 2. Simpan ke departemen (HANYA field yang ada)
+            Departemen::create([
+                'id_pengguna' => $pengguna->id_pengguna,
+                'nama_departemen' => $request->nama,
+                'status_aktif' => 'aktif', // ← PAKAI status_aktif
+                // 'email' → HAPUS!
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('crud_departemen.index')
+                ->with('success', 'Departemen berhasil ditambahkan!');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal menambahkan departemen: ' . $e->getMessage());
+        }
     }
 
-    // DETAIL: Tampilkan detail khusus 1 departemen (Sesuai tugas poin 5)
-    public function show($id)
-    {
-        $departemen = Departemen::findOrFail($id);
-        return view('admin.crud_departemen.show', compact('departemen'));
-    }
-
-    // 3. UPDATE: Halaman Edit Departemen
     public function edit($id)
     {
-        $departemen = Departemen::findOrFail($id);
+        $departemen = Departemen::with('pengguna')->findOrFail($id);
         return view('admin.crud_departemen.edit', compact('departemen'));
     }
 
-    // Proses Simpan Perubahan Edit Departemen
     public function update(Request $request, $id)
     {
+        $departemen = Departemen::with('pengguna')->findOrFail($id);
+
         $request->validate([
-            'nama_departemen' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|unique:pengguna,email',
+            'password' => 'nullable|min:6|confirmed',
         ]);
 
-        $departemen = Departemen::findOrFail($id);
-        $departemen->nama_departemen = $request->nama_departemen;
-        $departemen->deskripsi = $request->deskripsi;
-        $departemen->save();
+        DB::beginTransaction();
 
-        return redirect()->route('crud_departemen.index')->with('success', 'Data Departemen berhasil diperbarui!');
+        try {
+            // Update pengguna
+            $pengguna = $departemen->pengguna;
+            $pengguna->email = $request->email;
+            if ($request->filled('password')) {
+                $pengguna->kata_sandi = Hash::make($request->password);
+            }
+            $pengguna->save();
+
+            // Update departemen
+            $departemen->nama_departemen = $request->nama;
+            // $departemen->email = $request->email; → HAPUS!
+            $departemen->save();
+
+            DB::commit();
+
+            return redirect()->route('crud_departemen.index')
+                ->with('success', 'Data departemen berhasil diperbarui!');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal mengupdate departemen: ' . $e->getMessage());
+        }
     }
 
-    // 4. DELETE: Hapus Data Departemen
+    public function show($id)
+    {
+        $departemen = Departemen::with('pengguna')->findOrFail($id);
+        return view('admin.crud_departemen.show', compact('departemen'));
+    }
+
     public function destroy($id)
     {
-        $departemen = Departemen::findOrFail($id);
-        $departemen->delete();
+        $departemen = Departemen::with('pengguna')->findOrFail($id);
 
-        return redirect()->route('crud_departemen.index')->with('success', 'Departemen berhasil dihapus!');
+        DB::beginTransaction();
+
+        try {
+            $departemen->delete();
+            if ($departemen->pengguna) {
+                $departemen->pengguna->delete();
+            }
+            DB::commit();
+
+            return redirect()->route('crud_departemen.index')
+                ->with('success', 'Departemen berhasil dihapus!');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal menghapus departemen: ' . $e->getMessage());
+        }
     }
 }

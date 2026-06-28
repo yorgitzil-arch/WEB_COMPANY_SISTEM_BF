@@ -18,9 +18,17 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('admin.dashboard');
     Route::resource('manage-admin', \App\Http\Controllers\Admin\AdminCrudController::class)->names('manage-admin');
-    Route::resource('crud_anggota', \App\Http\Controllers\Admin\AnggotaController::class)->names('crud_anggota');
+    
+    #crud anggota
+    Route::get('/crud_anggota', [App\Http\Controllers\Admin\AnggotaController::class, 'index'])->name('crud_anggota.index');
+    Route::get('/crud_anggota/create', [App\Http\Controllers\Admin\AnggotaController::class, 'create'])->name('crud_anggota.create');
+    Route::post('/crud_anggota', [App\Http\Controllers\Admin\AnggotaController::class, 'store'])->name('crud_anggota.store');
+    Route::get('/crud_anggota/{id}', [App\Http\Controllers\Admin\AnggotaController::class, 'show'])->name('crud_anggota.show');
+    Route::get('/crud_anggota/{id}/edit', [App\Http\Controllers\Admin\AnggotaController::class, 'edit'])->name('crud_anggota.edit');
+    Route::put('/crud_anggota/{id}', [App\Http\Controllers\Admin\AnggotaController::class, 'update'])->name('crud_anggota.update');
+    Route::delete('/crud_anggota/{id}', [App\Http\Controllers\Admin\AnggotaController::class, 'destroy'])->name('crud_anggota.destroy');
+    
     Route::resource('crud_departemen', \App\Http\Controllers\Admin\DepartemenController::class)->names('crud_departemen');
-
     // Tempat untuk menambahkan route admin di sini yaaaa!, Tambah sesuai kebutuhan fitur yang dikerjakan, jangan aneh-aneh biar mudah!
 });
 

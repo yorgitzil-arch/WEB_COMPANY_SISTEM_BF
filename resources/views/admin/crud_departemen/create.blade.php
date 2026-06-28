@@ -18,21 +18,35 @@
                 <h2 class="text-lg font-bold text-gray-800">Tambah Departemen Baru</h2>
                 <p class="text-xs text-gray-500 mt-1">Masukkan data departemen secara lengkap.</p>
             </div>
-            <form action="{{ route('crud_departemen.store') }}" method="POST" class="p-6 space-y-5">
-                @csrf
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Nama Departemen</label>
-                    <input type="text" name="nama_departemen" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" placeholder="Contoh: Digital Marketing">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Deskripsi Departemen</label>
-                    <textarea name="deskripsi" rows="4" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" placeholder="Tulis tugas pokok atau deskripsi departemen..."></textarea>
-                </div>
-                <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
-                    <a href="{{ route('crud_departemen.index') }}" class="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition">Batal</a>
-                    <button type="submit" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm transition">Simpan</button>
-                </div>
-            </form>
+            <form action="{{ route('crud_departemen.store') }}" method="POST" class="p-6 space-y-4">
+            @csrf
+
+            <div>
+                <label for="nama" class="block text-sm font-medium text-gray-700">Nama Departemen <span class="text-red-500">*</span></label>
+                <input type="text" name="nama" id="nama" value="{{ old('nama') }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm">
+            </div>
+
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email Login <span class="text-red-500">*</span></label>
+                <input type="email" name="email" id="email" value="{{ old('email') }}" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm">
+                <small class="text-gray-400 text-xs">Email ini digunakan untuk login ke sistem</small>
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Password <span class="text-red-500">*</span></label>
+                <input type="password" name="password" id="password" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm">
+            </div>
+
+            <div>
+                <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Konfirmasi Password <span class="text-red-500">*</span></label>
+                <input type="password" name="password_confirmation" id="password_confirmation" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm">
+            </div>
+
+            <div class="flex items-center justify-between">
+                <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">Simpan</button>
+                <a href="{{ route('crud_departemen.index') }}" class="text-gray-500 hover:text-gray-700 text-sm">Batal</a>
+            </div>
+        </form>
         </div>
     </div>
 </body>

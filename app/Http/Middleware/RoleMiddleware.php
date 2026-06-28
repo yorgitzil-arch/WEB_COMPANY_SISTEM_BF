@@ -16,6 +16,7 @@ class RoleMiddleware
 
         $userRole = Auth::user()->peran;
 
+
         if (!in_array($userRole, $roles)) {
             abort(403, 'Akses ditolak. Anda tidak memiliki izin untuk mengakses halaman ini.');
         }
