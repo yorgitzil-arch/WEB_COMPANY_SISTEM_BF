@@ -19,6 +19,8 @@
         <tr style="background: #f3f4f6; text-align: left;">
             <th style="padding: 1rem;">Nama Admin</th>
             <th style="padding: 1rem;">Email</th>
+            <th style="padding: 1rem;">Role</th>       
+            <th style="padding: 1rem;">Status</th>     
             <th style="padding: 1rem;">Aksi</th>
         </tr>
     </thead>
@@ -27,6 +29,10 @@
         <tr style="border-bottom: 1px solid #e5e7eb;">
             <td style="padding: 1rem;">{{ $admin->nama_lengkap }}</td>
             <td style="padding: 1rem;">{{ $admin->email }}</td>
+            <td style="padding: 1rem;">Admin</td>  <!-- ROLE -->
+            <td style="padding: 1rem;">
+                <span style="background: #22c55e; color: #fff; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">Aktif</span>
+            </td>
             <td style="padding: 1rem; display: flex; gap: 0.5rem;">
                 <a href="{{ route('manage-admin.edit', $admin->id_admin) }}" style="background: #eab308; color: #fff; padding: 0.25rem 0.75rem; border-radius: 4px; text-decoration: none; font-size: 0.875rem;">Edit</a>
                 

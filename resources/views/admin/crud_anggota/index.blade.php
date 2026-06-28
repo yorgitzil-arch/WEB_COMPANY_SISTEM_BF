@@ -32,78 +32,61 @@
 
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-gray-50 border-b border-gray-200 text-gray-600 text-xs uppercase font-semibold">
-                            <th class="py-4 px-6">Nama Lengkap</th>
-                            <th class="py-4 px-6">Email</th>
-                            <th class="py-4 px-6 text-right">Aksi</th>
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Lengkap</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="text-gray-700 text-sm divide-y divide-gray-100">
-                        @forelse($anggotas as $a)
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="py-4 px-6 font-medium text-gray-900">{{ $a->nama_lengkap }}</td>
-                            <td class="py-4 px-6 text-gray-500">{{ $a->email }}</td>
-                            <td class="py-4 px-6">
-                                <div class="flex gap-2 justify-end items-center">
-                                    <a href="{{ route('crud_anggota.show', $a->id_pengguna) }}" class="text-emerald-600 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-md font-medium text-xs transition">Detail & Portfolio</a>
-                                    
-                                    <a href="{{ route('crud_anggota.edit', $a->id_pengguna) }}" class="text-yellow-600 hover:text-yellow-900 bg-yellow-50 hover:bg-yellow-100 px-3 py-1.5 rounded-md font-medium text-xs transition">Edit</a>
-                                    
-                                    <form action="{{ route('crud_anggota.destroy', $a->id_pengguna) }}" method="POST" id="delete-form-{{ $a->id_pengguna }}" class="inline">
-                                        @csrf @method('DELETE')
-                                        <button type="button" onclick="confirmDelete('{{ $a->id_pengguna }}')" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-md font-medium text-xs transition">Hapus</button>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @forelse($anggota as $items)
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $items->nama_lengkap }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $items->email }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap flex gap-2">
+                                    <a href="{{ route('crud_anggota.show', $items->id_anggota) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm">Detail</a>
+                                    <a href="{{ route('crud_anggota.edit', $items->id_anggota) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-lg text-sm">Edit</a>
+
+                                    <form id="delete-form-{{ $items->id_anggota }}" action="{{ route('crud_anggota.destroy', $items->id_anggota) }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" onclick="confirmDelete({{ $items->id_anggota }})" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm transition duration-200">Hapus</button>
                                     </form>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
                         @empty
-                        <tr>
-                            <td colspan="3" class="py-8 text-center text-gray-400 text-sm">Belum ada data anggota terdaftar.</td>
-                        </tr>
+                            <tr>
+                                <td colspan="3" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">Tidak ada data anggota.</td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
-            @if($anggotas->hasPages())
+            @if(method_exists($anggota, 'links'))
                 <div class="p-4 border-t border-gray-200 bg-gray-50">
-                    {{ $anggotas->links() }}
+                    {{ $anggota->links() }}
                 </div>
             @endif
         </div>
     </div>
 
     <script>
-        function confirmDelete(id) {
-            const swalWithBootstrapButtons = Swal.mixin({
-              customClass: {
-                // Menggunakan class Tailwind agar serasi dengan desain Anda
-                confirmButton: "bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg mx-2",
-                cancelButton: "bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-2 rounded-lg mx-2"
-              },
-              buttonsStyling: false
-            });
-
-            swalWithBootstrapButtons.fire({
-              title: "Apakah kamu yakin?",
-              text: "Menghapus anggota juga akan memutus data portfolionya. Lanjutkan?",
-              icon: "warning",
-              showCancelButton: true,
-              confirmButtonText: "Ya, Hapus!",
-              cancelButtonText: "Batalkan!",
-              reverseButtons: true
+        function confirmDelete(anggotaId) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data anggota akan dihapus secara permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
             }).then((result) => {
-              if (result.isConfirmed) {
-                // Jika user klik Yes, maka submit form yang memiliki ID sesuai dengan ID anggota
-                document.getElementById('delete-form-' + id).submit();
-              } else if (result.dismiss === Swal.DismissReason.cancel) {
-                swalWithBootstrapButtons.fire({
-                  title: "Cancelled",
-                  text: "Data anggota aman :)",
-                  icon: "error"
-                });
-              }
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + anggotaId).submit();
+                }
             });
         }
     </script>

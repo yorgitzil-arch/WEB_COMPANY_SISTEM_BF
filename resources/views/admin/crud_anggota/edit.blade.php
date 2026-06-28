@@ -3,46 +3,39 @@
 @section('title', 'Dashboard create')
 
 @section('content')
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Anggota - Admin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 font-sans leading-normal tracking-normal">
-    <div class="container mx-auto p-4 md:p-8 max-w-3xl">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div class="border-b border-gray-200 p-6 bg-gray-50">
-                <h2 class="text-lg font-bold text-gray-800">Ubah Profil Anggota</h2>
-                <p class="text-xs text-gray-500 mt-1">Sesuaikan identitas primer dari anggota terpilih.</p>
-            </div>
-            
-            <form action="{{ route('crud_anggota.update', $anggota->id_pengguna) }}" method="POST" class="p-6 space-y-5">
-                @csrf 
-                @method('PUT')
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Nama Lengkap</label>
-                    <input type="text" name="nama" value="{{ $anggota->nama_lengkap }}" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Alamat Email</label>
-                    <input type="email" name="email" value="{{ $anggota->email }}" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition">
-                </div>
-                
-                <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
-                    <a href="{{ route('crud_anggota.index') }}" class="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition">Batal</a>
-                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-5 py-2 rounded-lg text-sm transition duration-200 shadow-sm">
-                        Simpan Perubahan
-                    </button>
-                </div>
-            </form>
-        </div>
+<div style="background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
+    <h3 style="margin-bottom: 1.5rem; font-weight: 600;">Halaman Edit Anggota</h3>
+    @if ($errors->any())
+    <div style="background: #fde2e2; color: #991b1b; padding: 1rem; border-radius: 6px; margin-bottom: 1rem;">
+        <ul style="list-style: none; margin: 0; padding: 0;">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
-</body>
-</html>
+@endif
+    
+    <form action="{{ route('crud_anggota.update', $anggota->id_anggota) }}" method="POST">
+        @csrf
+        @method('PUT')
+        
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem; color: #4b5563;">Nama Anggota</label>
+            <input type="text" name="nama" value="{{ $anggota->nama_lengkap }}" required style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px;">
+        </div>
 
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem; color: #4b5563;">Email Anggota</label>
+            <input type="email" name="email" value="{{ $anggota->email }}" required style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px;">
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; color: #4b5563;">Password Baru (Kosongkan jika tidak diganti)</label>
+            <input type="password" name="password" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 6px;" placeholder="Isi hanya jika ingin merubah password">
+        </div>
+
+        <button type="submit" style="background: #eab308; color: #fff; padding: 0.5rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Perbarui Data</button>
+        <a href="{{ route('crud_anggota.index') }}" style="margin-left: 1rem; color: #4b5563; text-decoration: none;">Batal</a>
+    </form>
+</div>
 @endsection
